@@ -1,0 +1,8 @@
+
+{
+  "name": "Escobal Print Studio",
+  "description": "A high-energy creative studio dashboard and landing page for managing print orders, quotes, and customer concerns.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

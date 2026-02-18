@@ -1,0 +1,90 @@
+/* Custom Animations matching tailwind-animate usage */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-1rem);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  /* No-op, just a marker or base */
+}
+
+.animate-in.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-in.zoom-in {
+  animation: zoomIn 0.5s ease-out forwards;
+}
+
+.animate-in.slide-in-from-bottom-4 {
+  animation: slideInUp 0.5s ease-out forwards;
+}
+
+/* Compose: if both fade-in and slide-in are present, use a combined animation or just let cascade handle (usually last one wins if generic). 
+   Better to define combo. */
+.animate-in.fade-in.slide-in-from-bottom-4 {
+  animation: fadeIn 0.5s ease-out forwards, slideInUp 0.5s ease-out forwards;
+}
+
+.animate-in.fade-in.slide-in-from-top-4 {
+  animation: fadeIn 0.3s ease-out forwards, slideInDown 0.3s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #e2e8f0;
+}
