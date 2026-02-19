@@ -16,8 +16,27 @@ const Inventory: React.FC = () => {
     });
 
     useEffect(() => {
-        setItems(db.getInventory());
+        const fetchInventory = () => {
+            setItems(db.getInventory());
+        };
+
+        fetchInventory();
+
+        const handleUpdate = (e?: StorageEvent) => {
+            if (!e || (e.key && e.key.startsWith('eps_'))) {
+                fetchInventory();
+            }
+        };
+
+        window.addEventListener('storage', handleUpdate);
+        window.addEventListener('eps-db-update', handleUpdate);
+
+        return () => {
+            window.removeEventListener('storage', handleUpdate);
+            window.removeEventListener('eps-db-update', handleUpdate);
+        };
     }, []);
+
 
     const handleAddItem = () => {
         setIsModalOpen(true);

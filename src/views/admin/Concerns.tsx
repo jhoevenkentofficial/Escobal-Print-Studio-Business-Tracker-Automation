@@ -16,13 +16,22 @@ const Concerns: React.FC = () => {
         fetchConcerns();
 
         const handleStorageChange = (e: StorageEvent) => {
-            if (e.key === 'eps_concerns') {
+            if (e.key?.startsWith('eps_')) {
                 fetchConcerns();
             }
         };
 
         window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
+
+        const handleDbUpdate = () => {
+            fetchConcerns();
+        };
+        window.addEventListener('eps-db-update', handleDbUpdate);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('eps-db-update', handleDbUpdate);
+        };
     }, []);
 
     const handleStatusUpdate = (id: string, newStatus: Concern['status']) => {

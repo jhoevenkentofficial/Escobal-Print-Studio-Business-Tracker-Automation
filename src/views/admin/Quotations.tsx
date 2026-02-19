@@ -16,13 +16,22 @@ const Quotations: React.FC = () => {
         fetchQuotations();
 
         const handleStorageChange = (e: StorageEvent) => {
-            if (e.key === 'eps_quotations') {
+            if (e.key?.startsWith('eps_')) {
                 fetchQuotations();
             }
         };
 
         window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
+
+        const handleDbUpdate = () => {
+            fetchQuotations();
+        };
+        window.addEventListener('eps-db-update', handleDbUpdate);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('eps-db-update', handleDbUpdate);
+        };
     }, []);
 
     const handleStatusUpdate = (id: string, newStatus: Quotation['status']) => {

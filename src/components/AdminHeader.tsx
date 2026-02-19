@@ -86,13 +86,20 @@ const AdminHeader: React.FC = () => {
             }
         };
 
+        const handleDbUpdate = () => {
+            console.log('[Header] DB update event detected');
+            fetchNotifications();
+        };
+
         window.addEventListener('storage', handleStorageChange);
+        window.addEventListener('eps-db-update', handleDbUpdate);
 
         // Also a quick poll as fallback for the same tab
         const interval = setInterval(fetchNotifications, 5000);
 
         return () => {
             window.removeEventListener('storage', handleStorageChange);
+            window.removeEventListener('eps-db-update', handleDbUpdate);
             clearInterval(interval);
         };
     }, []);

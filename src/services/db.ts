@@ -44,10 +44,15 @@ class DatabaseService {
         }
     }
 
+    private notifyUpdate() {
+        window.dispatchEvent(new CustomEvent('eps-db-update'));
+    }
+
     private set(key: string, data: any[]) {
         try {
             console.log(`[DB] Setting ${key} at origin ${window.location.origin}:`, data);
             localStorage.setItem(key, JSON.stringify(data));
+            this.notifyUpdate();
         } catch (error) {
             console.error(`[DB] Error saving ${key}:`, error);
         }

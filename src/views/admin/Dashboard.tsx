@@ -96,18 +96,36 @@ const AdminDashboard: React.FC = () => {
     });
 
     useEffect(() => {
-        const quotes = db.getQuotations();
-        const sales = db.getSales();
-        const concerns = db.getConcerns();
-        const inventory = db.getInventory();
+        const fetchData = () => {
+            const quotes = db.getQuotations();
+            const sales = db.getSales();
+            const concerns = db.getConcerns();
+            const inventory = db.getInventory();
 
-        setStats({
-            pendingQuotes: quotes.filter(q => q.status === 'PENDING').length,
-            totalSales: sales.reduce((acc, sale) => acc + sale.totalAmount, 0),
-            openConcerns: concerns.filter(c => c.status === 'OPEN').length,
-            lowStockItems: inventory.filter(i => i.quantity <= i.threshold).length
-        });
+            setStats({
+                pendingQuotes: quotes.filter(q => q.status === 'PENDING').length,
+                totalSales: sales.reduce((acc, sale) => acc + sale.totalAmount, 0),
+                openConcerns: concerns.filter(c => c.status === 'OPEN').length,
+                lowStockItems: inventory.filter(i => i.quantity <= i.threshold).length
+            });
+        };
+
+        fetchData();
+
+        const handleUpdate = () => {
+            console.log('[Dashboard] Refreshing data...');
+            fetchData();
+        };
+
+        window.addEventListener('storage', handleUpdate);
+        window.addEventListener('eps-db-update', handleUpdate);
+
+        return () => {
+            window.removeEventListener('storage', handleUpdate);
+            window.removeEventListener('eps-db-update', handleUpdate);
+        };
     }, []);
+
 
     return (
         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
